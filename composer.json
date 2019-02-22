@@ -1,0 +1,80 @@
+{
+  "name": "masgeek/results-tool",
+  "description": "Yii2 Bases Results tool with frontend,api and backend modules",
+  "authors": [
+    {
+      "name": "Sammy Barasa",
+      "email": "barsamms@gmail.com",
+      "role": "Lead Developer"
+    },
+    {
+      "name": "Anthony Githaka",
+      "role": "Lead Developer"
+    },
+    {
+      "name": "Benard Mutisya",
+      "role": "Project Manager"
+    }
+  ],
+  "keywords": [
+    "yii2",
+    "framework",
+    "advanced",
+    "REST"
+  ],
+  "homepage": "http://results.tsobu.co.ke",
+  "type": "project",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=5.6.0",
+    "himiklab/yii2-recaptcha-widget": "^1.2",
+    "kartik-v/yii2-password": "^1.5",
+    "kartik-v/yii2-widget-select2": "^2.1",
+    "kartik-v/yii2-widget-typeahead": "^1.0",
+    "mdmsoft/yii2-admin": "dev-master#e9cc1d8adc as 2.8-p1",
+    "mootensai/yii2-enhanced-gii": "^1.0",
+    "yidas/yii2-fontawesome": "^2.0",
+    "yiimaker/yii2-email-templates": "^4.1",
+    "yiisoft/yii2": "~2.0.6",
+    "yiisoft/yii2-bootstrap": "~2.1.0@dev",
+    "yiisoft/yii2-httpclient": "^2.0",
+    "yiisoft/yii2-swiftmailer": "~2.0.0 || ~2.1.0"
+  },
+  "require-dev": {
+    "yiisoft/yii2-debug": "~2.0.0",
+    "yiisoft/yii2-gii": "~2.0.0",
+    "yiisoft/yii2-faker": "~2.0.0",
+    "mdmsoft/yii2-gii": "^1.0@dev"
+  },
+  "config": {
+    "process-timeout": 1800,
+    "sort-packages": true,
+    "fxp-asset": {
+      "enabled": false
+    }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://asset-packagist.org"
+    }
+  ],
+  "scripts": {
+    "pre-update-cmd": [
+      "yarn install --check-files"
+    ],
+    "post-create-project-cmd": [
+      "yii\\composer\\Installer::postCreateProject"
+    ],
+    "post-install-cmd": [
+      "yarn"
+    ],
+    "post-update-cmd": [
+      "yarn autoclean --force",
+      "npm link gulp",
+      "gulp"
+    ]
+  }
+}
