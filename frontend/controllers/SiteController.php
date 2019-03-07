@@ -49,11 +49,12 @@ class SiteController extends BaseWebController
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('login', [
+            'model' => $model,
+        ]);
+
     }
 
     public function actionLogout()

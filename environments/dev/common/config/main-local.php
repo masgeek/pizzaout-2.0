@@ -3,7 +3,8 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=shingo;port=3306',
+            'dsn' => 'mysql:host=localhost;dbname=pizzaout_db;port=3306',
+            'tablePrefix' => 'tb_',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',

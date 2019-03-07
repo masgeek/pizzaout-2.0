@@ -6,7 +6,7 @@
  * Time: 9:53 AM
  */
 
-$url_rules = [
+/*$url_rules = [
     '<alias:\w+>' => 'site/<alias>',
     //candidate actions
     'candidate/register' => 'candidate/default/signup',
@@ -27,6 +27,34 @@ $url_rules = [
     'county/register' => 'county/default/signup',
     'county/login' => 'county/default/login',
     'county/logout' => 'county/default/logout'
+];*/
+
+$url_rules = [
+    '<controller:\w+>/<id:\d+>' => '<controller>/view',
+    '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+    '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+    //custom rules
+    '/' => 'site/index',
+    'my-staff' => 'staff/index',
+    'my-payments' => 'payment/index',
+    'pending-payments' => 'payment/pending-payments',
+    'confirm-payment' => 'payment/confirm-payment',
+    'finalized-payments' => 'payment/finalized-payments',
+    'my-bookings' => 'reservation/index',
+    'add-service' => 'salonservices/create',
+    'assign-service' => 'booked/assign-service',
+    'confirm-service' => 'booked/confirm-service',
+    'confirm-reservation' => 'reservation/confirm-reservation',
+    'process-reservation' => 'reservation/process-reservation',
+    'confirm' => 'reservation/confirm',
+    'services' => 'service/index',
+
+    'active-users' => 'user/active-users',
+    'pending-users' => 'user/pending-users',
+    'suspended-users' => 'user/suspended-users',
+    'deactivated-users' => 'user/deactivated-users',
+    'user-status' => 'user/user-status',
 ];
+
 
 return $url_rules;

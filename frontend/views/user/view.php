@@ -4,19 +4,19 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\User */
+/* @var $model common\models\Users */
 
-$this->title = $model->id;
+$this->title = $model->USER_ID;
 $this->params['breadcrumbs'][] = ['label' => 'Users', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-view">
+<div class="users-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Update', ['update', 'id' => $model->USER_ID], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Delete', ['delete', 'id' => $model->USER_ID], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => 'Are you sure you want to delete this item?',
@@ -28,20 +28,21 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
-            'username',
-            'auth_key',
-            'password_hash',
-            'password_reset_token',
-            'email:email',
-            'role',
-            'account_type',
-            'exam_ref',
-            'exam_type',
-            'exam_year',
-            'status',
-            'created_at',
-            'updated_at',
+            'USER_ID',
+            'USER_NAME',
+            'USER_TYPE',
+            'SURNAME',
+            'OTHER_NAMES',
+            'MOBILE',
+            'EMAIL:email',
+            'LOCATION_ID',
+            'PASSWORD',
+            'DATE_REGISTERED',
+            'LAST_UPDATED',
+            'CLIENT_TOKEN',
+            'RESET_TOKEN',
+            'USER_STATUS:boolean',
+            'TOKEN_EXPPIRY',
         ],
     ]) ?>
 

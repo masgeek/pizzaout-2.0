@@ -12,6 +12,9 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'bootstrap' => ['log'],
     'modules' => [
+        'customer' => [
+            'class' => 'frontend\modules\customer\Module',
+        ],
         'candidate' => [
             'class' => 'frontend\modules\candidate\Module',
         ],

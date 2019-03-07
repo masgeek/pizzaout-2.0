@@ -3,11 +3,14 @@
 namespace common\models\login;
 
 
+use common\helper\APP_UTILS;
+use common\models\UserType;
 use Yii;
+use yii\base\Security;
 use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
 use common\models\AccessTokens;
-use common\models\User as BaseUser;
+use common\models\base\Users as BaseUser;
 
 /**
  * User model
@@ -27,103 +30,26 @@ use common\models\User as BaseUser;
  */
 class User extends BaseUser implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
-    const ROLE_USER = 10;
+    public $ACCOUNT_AUTH_KEY;
+    public $PASSWORD_RESET_TOKEN;
+    public $CONFIRM_PASSWORD;
+    public $FULL_NAMES;
 
     /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%user}}';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::class,
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        $rules = parent::rules();
-        return $rules;
-    }
-
-    public function rulesOld()
-    {
-        return [
-            ['status', 'default', 'value' => self::STATUS_ACTIVE],
-            ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-
-            ['role', 'default', 'value' => self::ROLE_USER],
-            ['role', 'in', 'range' => [self::ROLE_USER]],
-        ];
-    }
-
-    /**
-     * @inheritdoc
+     * Finds an identity by the given ID.
+     * @param string|int $id the ID to be looked for
+     * @return IdentityInterface the identity object that matches the given ID.
+     *                       Null should be returned if such an identity cannot be found
+     *                       or the identity is not in an active state (disabled, deleted, etc.)
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne($id);
     }
 
-    /**
-     * @inheritdoc
-     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $access_token = AccessTokens::findOne(['token' => $token]);
-        if ($access_token) {
-            if ($access_token->expires_at < time()) {
-                return Yii::$app->api->sendFailedResponse('Access token expired');
-            }
-
-            return static::findOne(['id' => $access_token->user_id]);
-        }
-        return false;
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
-    }
-
-    /**
-     * Finds user by password reset token
-     *
-     * @param string $token password reset token
-     * @return static|null
-     */
-    public static function findByPasswordResetToken($token)
-    {
-        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
-        $parts = explode('_', $token);
-        $timestamp = (int)end($parts);
-        if ($timestamp + $expire < time()) {
-            // token expired
-            return null;
-        }
-
-        return static::findOne([
-            'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
-        ]);
+        return $token;
     }
 
     /**
@@ -136,56 +62,121 @@ class User extends BaseUser implements IdentityInterface
 
     /**
      * @inheritdoc
+     * @return string
      */
     public function getAuthKey()
     {
-        return $this->auth_key;
+        return null;
     }
 
-    /**
-     * @inheritdoc
-     */
+
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
     }
 
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return boolean if password provided is valid for current user
-     */
-    public function validatePassword($password)
+    public static function findByUsername($username)
     {
-        return Yii::$app->security->validatePassword($password, $this->password_hash);
+        /* @var $userModel $this */
+
+        $account_found = null;
+        //$userModel = UserProfile::findOne(['USER_NAME' => $username, 'EMAIL_ADDRESS'=>$username]);
+        $userModel = self::find()
+            ->select(['USER_ID', 'EMAIL'])//select only specific fields
+            ->where(['EMAIL' => $username])
+            ->one();
+        if ($userModel == null) {
+            $userModel = self::find()
+                ->select(['USER_ID', 'EMAIL'])//select only specific fields
+                ->where(['USER_NAME' => $username])
+                ->one();
+        }
+        if ($userModel != null) {
+            $account_found = static::findOne(['USER_ID' => $userModel->USER_ID]);
+        }
+        return $account_found;
+    }
+
+    public static function findByEmail($email)
+    {
+        /* @var $userModel $this */
+
+        $account_found = null;
+        //$userModel = UserProfile::findOne(['USER_NAME' => $username, 'EMAIL_ADDRESS'=>$username]);
+        $userModel = self::find()
+            ->select(['USER_ID', 'EMAIL'])//select only specific fields
+            ->where(['EMAIL' => $email])
+            ->one();
+
+        if ($userModel != null) {
+            $account_found = static::findOne(['USER_ID' => $userModel->USER_ID]);
+        }
+        return $account_found;
+    }
+
+    public static function findByToken($token)
+    {
+        /* @var $userModel $this */
+        $account_found = null;
+        $userModel = self::find()
+            ->select(['USER_ID', 'EMAIL'])//select only specific fields
+            ->where(['RESET_TOKEN' => $token])
+            ->one();
+
+        if ($userModel != null) {
+            $account_found = static::findOne(['USER_ID' => $userModel->USER_ID]);
+        }
+        return $account_found;
     }
 
     /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
+     * @param bool $insert
+     * @return bool
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            $date = APP_UTILS::GetCurrentDateTime();
+            if ($this->isNewRecord) {
+                $this->DATE_REGISTERED = $date;
+            }
+            $this->LAST_UPDATED = $date;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Password validation during login
+     * @param $password
+     * @return bool
+     */
+    public function validatePassword($password)
+    {
+        return $this->PASSWORD === sha1($password);
+    }
+
+    /**
+     * @param $password
      * @throws \yii\base\Exception
      */
     public function setPassword($password)
     {
-        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
+        $this->PASSWORD = Security::generatePasswordHash($password);
     }
 
-    /**
-     * Generates "remember me" authentication key
-     */
-    public function generateAuthKey()
+    public function getPassword()
     {
-        $this->auth_key = Yii::$app->security->generateRandomKey();
+        return $this->PASSWORD;
     }
 
     /**
-     * Generates new password reset token
+     * Generates a password reset token
      */
     public function generatePasswordResetToken()
     {
-        $this->password_reset_token = Yii::$app->security->generateRandomKey() . '_' . time();
+        $this->PASSWORD_RESET_TOKEN = Security::generateRandomKey() . '_' . time();
     }
 
     /**
@@ -193,6 +184,32 @@ class User extends BaseUser implements IdentityInterface
      */
     public function removePasswordResetToken()
     {
-        $this->password_reset_token = null;
+        $this->PASSWORD_RESET_TOKEN = null;
+    }
+
+    //fields to return common stuff
+    public function getUsername()
+    {
+        return $this->USER_NAME;
+    }
+
+    public function getFullNames()
+    {
+        return $this->SURNAME . ', ' . $this->OTHER_NAMES;
+    }
+
+    public function getEmailAddress()
+    {
+        return $this->EMAIL;
+    }
+
+    public function getMobile()
+    {
+        return $this->MOBILE;
+    }
+
+    public function getUserType()
+    {
+        return UserType::findOne($this->USER_TYPE)->USER_TYPE_NAME;
     }
 }

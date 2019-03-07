@@ -6,6 +6,8 @@ $params = array_merge(
     require(__DIR__ . '/params-local.php')
 );
 
+$url_rules = require(__DIR__ . '/url-rules.php');
+
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
@@ -17,30 +19,37 @@ return [
             'layout' => 'right-menu',
             'controllerMap' => [
                 'assignment' => [
-                    'label' => 'Grant Access', // change label
+                    //'label' => 'Grant Access', // change label
                     'class' => 'mdm\admin\controllers\AssignmentController',
-                    'userClassName' => 'common\models\User',
+                    'userClassName' => 'common\models\login\User',
                     //'searchClass' => 'common\models\search\UserSearch',
                     'idField' => 'id',
-                    'usernameField' => 'username',
-                    'fullnameField' => 'username',
+                    'usernameField' => 'USER_NAME',
+                    'fullnameField' => 'USER_NAME',
                     'extraColumns' => [
                         [
                             'attribute' => 'email',
                             'label' => 'Email',
                             'value' => function ($model, $key, $index, $column) {
-                                /* @var $model \common\models\User */
-                                return "{$model->email}";
+                                /* @var $model \common\models\Users */
+                                return "{$model->EMAIL}";
                             },
                         ]
                     ],
                 ],
             ],
         ],
+        'reports' => [
+            'class' => 'backend\modules\reports\Module',
+            'defaultRoute' => 'report',
+        ],
+        'setup' => [
+            'class' => 'backend\modules\setup\Module',
+        ],
     ],
     'components' => [
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\login\User',
             'enableAutoLogin' => true,
         ],
         'log' => [
@@ -59,8 +68,7 @@ return [
             'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => $url_rules,
         ],
     ],
     'as access' => [

@@ -5,7 +5,7 @@ namespace common\models;
 use \common\models\base\Migration as BaseMigration;
 
 /**
- * This is the model class for table "migration".
+ * This is the model class for table "tbmigration".
  */
 class Migration extends BaseMigration
 {
@@ -22,4 +22,14 @@ class Migration extends BaseMigration
         ]);
     }
 	
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'version' => 'Version',
+            'apply_time' => 'Apply Time',
+        ];
+    }
 }

@@ -1,33 +1,54 @@
 <?php
+
 use yii\helpers\Html;
 
 ?>
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Twitter -->
-    <meta name="twitter:site" content="@themepixels">
-    <meta name="twitter:creator" content="@themepixels">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Slim">
-    <meta name="twitter:description" content="Premium Quality and Responsive UI for Dashboard.">
-    <meta name="twitter:image" content="http://themepixels.me/slim/img/slim-social.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <!-- Facebook -->
-    <meta property="og:url" content="http://themepixels.me/slim">
-    <meta property="og:title" content="Slim">
-    <meta property="og:description" content="Premium Quality and Responsive UI for Dashboard.">
 
-    <meta property="og:image" content="http://themepixels.me/slim/img/slim-social.png">
-    <meta property="og:image:secure_url" content="http://themepixels.me/slim/img/slim-social.png">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="600">
+    <meta name="keywords" content="HTML5 Pizza Android IOS"/>
+    <meta name="description" content="Pizza Ordering Application">
+    <meta name="author" content="Sammy Barasa <barsaamms@gmail.com>">
 
-    <!-- Meta -->
-    <meta name="description" content="Premium Quality and Responsive UI for Dashboard.">
-    <meta name="author" content="ThemePixels">
+    <!-- Mobile Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <link rel="dns-prefetch" href="http://fonts.googleapis.com/">
+
+    <!-- favicons -->
+    <link rel="apple-touch-icon" sizes="57x57"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16"
+          href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/favicon-16x16.png">
+    <link rel="manifest" href="<?= Yii::$app->request->baseUrl; ?>/images/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage"
+          content="<?= Yii::$app->request->baseUrl; ?>/images/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
 
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>

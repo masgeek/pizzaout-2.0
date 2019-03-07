@@ -5,30 +5,17 @@ namespace common\models\base;
 use Yii;
 
 /**
- * This is the base model class for table "country".
+ * This is the model class for table "country".
  *
- * @property string $code
- * @property string $country
- * @property integer $population
+ * @property int $COUNRY_ID
+ * @property string $COUNTRY_NAME
+ *
+ * @property City[] $cities
  */
 class Country extends \yii\db\ActiveRecord
 {
-    use \mootensai\relation\RelationTrait;
-
     /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['code', 'country', 'population'], 'required'],
-            [['population'], 'integer'],
-            [['code', 'country'], 'string', 'max' => 255]
-        ];
-    }
-    
-    /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function tableName()
     {
@@ -36,14 +23,32 @@ class Country extends \yii\db\ActiveRecord
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['COUNTRY_NAME'], 'required'],
+            [['COUNTRY_NAME'], 'string', 'max' => 100],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function attributeLabels()
     {
         return [
-            'code' => 'Code',
-            'country' => 'Country',
-            'population' => 'Population',
+            'COUNRY_ID' => 'C O U N R Y I D',
+            'COUNTRY_NAME' => 'C O U N T R Y N A M E',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCities()
+    {
+        return $this->hasMany(City::className(), ['COUNTRY_ID' => 'COUNRY_ID']);
     }
 }

@@ -1,32 +1,28 @@
 'use strict';
 
-const gulp = require('gulp');
-//,watch = require('gulp-watch');
-
+var gulp = require('gulp');
+/*
+var gulp = require('gulp'),
+    watch = require('gulp-watch');
+    */
 //npm install --save-dev gulp
 
 const includedFileTypes = "js,css,png,jpeg,jpg,svg,tiff,woff,woff2,eot,ttf";
 
-const sharedAssetsSource = './environments/_shared-assets/**/*.{' + includedFileTypes + '}';
+const sharedAssetsSource = './environments/_shared-assets/**/*';
 const $frontendSource = './environments/_front_end-assets/**/*.{' + includedFileTypes + '}';
 const $backendSource = './environments/_back_end-assets/**/*.{' + includedFileTypes + '}';
 
-//Development Path
-const $backendDestDevPath = './environments/dev/backend/web/';
-const $frontendDestDevPath = './environments/dev/frontend/web/';
-
-//Production paths
-const $backendDestProdPath = './environments/prod/backend/web/';
-const $frontendDestProdPath = './environments/prod/frontend/web/';
+const $webFrontendPath = './frontend/myassets/';
+const $adminBackendPath = './backend/myassets/';
 
 
-const $webFrontendPath = './frontend/web/';
-const $adminBackendPath = './backend/web/';
+/*
+gulp.task('monitor', function () {
+    gulp.watch($frontendSource, ['copy-assets']);
+});*/
 
-const $webFrontendAssetsPath = './backend/web/assets';
-const $adminBackendAssetsPath = './backend/web/assets';
-
-gulp.task('default', function () {
+gulp.task('default', function (done) {
     //--- Copy to front end ---//
     gulp.src(sharedAssetsSource)
         .pipe(gulp.dest($webFrontendPath))
@@ -37,4 +33,8 @@ gulp.task('default', function () {
 
     gulp.src($backendSource)
         .pipe(gulp.dest($adminBackendPath));
+
+    done();
 });
+
+//gulp.task('default', ['copy-assets']);

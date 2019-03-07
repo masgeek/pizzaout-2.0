@@ -30,4 +30,5 @@ phpunit.phar
 /phpunit.xml
 *.zip
 .phploy
+phploy.phar
 yarn-error.log

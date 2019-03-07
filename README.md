@@ -17,7 +17,7 @@ composer install
 * frontend
 
 ````
-1/countries?access-token=7770feeb52d3e72dcd90b34135ae47d3
+v1/countries?access-token=7770feeb52d3e72dcd90b34135ae47d3
 ````
 ## Run Yii Init
 Open terminal and go to the project folder and run

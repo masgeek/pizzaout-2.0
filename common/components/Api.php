@@ -6,7 +6,7 @@ use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
 use yii\helpers\Json;
-use common\models\User;
+use common\models\Users;
 
 use common\models\AuthorizationCodes;
 use common\models\AccessTokens;

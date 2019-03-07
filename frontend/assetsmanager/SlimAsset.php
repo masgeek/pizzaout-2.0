@@ -16,17 +16,17 @@ class SlimAsset extends MyAssetBundle
     public $css = [
         //'site.css',
         //'slim/ionicons/css/ionicons.css',
-        'slim/css/slim.css',
+        'myassets/slim/css/slim.css',
         //'slim/css/slim.header-one.css', //blue header dark nav bar
         //'slim/css/slim.header-two.css', //dark header light nav bar
         //'slim/css/slim.one.css', //dark theme
     ];
     public $js = [
-        'slim/js/slim.js'
+        'myassets/slim/js/slim.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        '\yii\bootstrap\BootstrapPluginAsset',
+        '\yii\bootstrap4\BootstrapPluginAsset',
         'yidas\yii\fontawesome\FontawesomeAsset',
         'frontend\assetsmanager\SlimBowerAsset'
     ];

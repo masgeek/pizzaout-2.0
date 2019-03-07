@@ -21,9 +21,16 @@ return [
         'path' => 'dev',
         'writable' => [
             'backend/runtime',
-            'backend/web/assets',
+            'backend/assets',
             'frontend/runtime',
-            'frontend/web/assets',
+            'frontend/assets',
+            'frontend/images',
+            'backend/images'
+        ],
+        'createSymlink' => [
+            // link               =>   real folder
+            'frontend/images' => 'common/images',
+            'backend/images' => 'common/images',
         ],
         'executable' => [
             'yii',
@@ -33,9 +40,11 @@ return [
         'path' => 'prod',
         'writable' => [
             'backend/runtime',
-            'backend/web/assets',
+            'backend//assets',
             'frontend/runtime',
-            'frontend/web/assets',
+            'frontend/assets',
+            'frontend/images',
+            'backend/images'
         ],
         'executable' => [
             'yii',

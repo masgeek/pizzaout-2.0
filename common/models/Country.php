@@ -16,10 +16,19 @@ class Country extends BaseCountry
     {
         return array_replace_recursive(parent::rules(),
 	    [
-            [['code', 'country', 'population'], 'required'],
-            [['population'], 'integer'],
-            [['code', 'country'], 'string', 'max' => 255]
+            [['COUNTRY_NAME'], 'required'],
+            [['COUNTRY_NAME'], 'string', 'max' => 100]
         ]);
     }
 	
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'COUNRY_ID' => 'C O U N R Y I D',
+            'COUNTRY_NAME' => 'C O U N T R Y N A M E',
+        ];
+    }
 }
