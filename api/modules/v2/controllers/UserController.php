@@ -6,14 +6,11 @@
  * Time: 8:47 PM
  */
 
-namespace app\api\modules\v1\controllers;
+namespace api\modules\v2\controllers;
 
-use app\api\modules\v1\models\ACCOUNT_TYPE_MODEL;
-use app\api\modules\v1\models\API_TOKEN_MODEL;
-use app\api\modules\v1\models\SERVICE_MODEL;
-use app\api\modules\v1\models\USER_MODEL;
-use app\helpers\APP_UTILS;
-use app\models\ContactForm;
+use api\models\USER_MODEL;
+use common\helper\APP_UTILS;
+use common\models\ApiToken as API_TOKEN_MODEL;
 use Yii;
 use yii\helpers\Url;
 use yii\rest\ActiveController;
@@ -27,7 +24,7 @@ class UserController extends ActiveController
     /**
      * @var object
      */
-    public $modelClass = 'app\api\modules\v1\models\USER_MODEL';
+    public $modelClass = 'api\models\USER_MODEL';
 
     /**
      * @return array
@@ -35,33 +32,9 @@ class UserController extends ActiveController
     public function actions()
     {
         $actions = parent::actions();
-
-        //unset($actions['create']);
-        //unset($actions['index']);
         unset($actions['delete']);
         return $actions;
     }
-
-    /**
-     * @param string $action
-     * @param null $model
-     * @param array $params
-     * @throws \yii\web\ForbiddenHttpException
-     */
-    public function checkAccess($action, $model = null, $params = [])
-    {
-        /*$api_token = Yii::$app->request->headers->get("api_token", null);
-        $user_id = Yii::$app->request->headers->get("user_id", null);
-
-        if ($api_token == null && $user_id == null) {
-            throw new \yii\web\ForbiddenHttpException("You can't $action this section. $api_token");
-        }
-        //check if the token is valid
-        if (!API_TOKEN_MODEL::IsValidToken($api_token, $user_id)) {
-            throw new \yii\web\ForbiddenHttpException('Invalid token, access denied');
-        }*/
-    }
-
 
 
     /**
@@ -143,8 +116,8 @@ class UserController extends ActiveController
         $request = ['USER_MODEL' => Yii::$app->request->post()];
 
         $plain_pass = Yii::$app->request->post('PASSWORD');
-        $returnModel = Yii::$app->request->post('RETURN_MODEL',false);
-        $userStatus = Yii::$app->request->post('USER_STATUS',false);
+        $returnModel = Yii::$app->request->post('RETURN_MODEL', false);
+        $userStatus = Yii::$app->request->post('USER_STATUS', false);
 
 
         $user = new USER_MODEL();
@@ -155,7 +128,7 @@ class UserController extends ActiveController
         if ($user->validate()) {
             $user->PASSWORD = sha1($plain_pass);
             if ($user->save()) {
-                if($returnModel==='YES'){
+                if ($returnModel === 'YES') {
                     return $user;
                 }
 

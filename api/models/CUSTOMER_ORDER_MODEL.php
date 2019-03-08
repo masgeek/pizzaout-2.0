@@ -6,19 +6,20 @@
  * Time: 15:13
  */
 
-namespace app\api\modules\v1\models;
+namespace api\models;
 
 
-use app\helpers\APP_UTILS;
-use app\helpers\ORDER_HELPER;
-use app\model_extended\CUSTOMER_ORDERS;
-use Symfony\Component\Console\Helper\Helper;
+use common\helper\APP_UTILS;
+use common\helper\OrderHelper as ORDER_HELPER;
+use common\models\CustomerOrderItem as CUSTOMER_ORDER_ITEM;
+use common\models\CustomerOrder;
+use common\models\Payment;
 
 /**
  *
- * @property PAYMENT_MODEL $payment
+ * @property Payment $payment
  */
-class CUSTOMER_ORDER_MODEL extends CUSTOMER_ORDERS
+class CUSTOMER_ORDER_MODEL extends CustomerOrder
 {
 
     public function fields()
@@ -46,7 +47,7 @@ class CUSTOMER_ORDER_MODEL extends CUSTOMER_ORDERS
 
         $fields['PAY_ORDER'] = function ($model) {
             /* @var $model $this */
-            return $model->ORDER_STATUS ===ORDER_HELPER::STATUS_PAYMENT_PENDING ? true : false;
+            return $model->ORDER_STATUS === ORDER_HELPER::STATUS_PAYMENT_PENDING ? true : false;
         };
         ksort($fields);
 
@@ -59,12 +60,12 @@ class CUSTOMER_ORDER_MODEL extends CUSTOMER_ORDERS
 
         $fields['ORDER_TIME'] = function ($model) {
             /* @var $model $this */
-            return APP_UTILS::FormatDateTime($model->ORDER_TIME,true,'H:i');
+            return APP_UTILS::FormatDateTime($model->ORDER_TIME, true, 'H:i');
         };
 
         $fields['ORDER_DATE_TIME'] = function ($model) {
             /* @var $model $this */
-            return APP_UTILS::FormatDateTime($model->ORDER_TIME,true,'Y-m-d H:i:s');
+            return APP_UTILS::FormatDateTime($model->ORDER_TIME, true, 'Y-m-d H:i:s');
         };
 
         $fields['LOCATION'] = function ($model) {

@@ -33,6 +33,7 @@
     "clean": "yarn autoclean --force",
     "frontend-dev": "php -S 127.0.0.1:8000 -t frontend/",
     "backend-dev": "php -S 127.0.0.1:8001 -t backend/",
-    "api-dev": "php -S 127.0.0.1:8002 -t api/"
+    "api-dev": "php -S 127.0.0.1:8002",
+    "api-dev-remote": "php -S 192.168.100.4:8003"
   }
 }

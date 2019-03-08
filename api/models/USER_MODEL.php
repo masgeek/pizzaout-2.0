@@ -6,7 +6,7 @@
  * Time: 12:33 PM
  */
 
-namespace app\api\modules\v1\models;
+namespace api\models;
 
 /*
  * User_ID
@@ -20,17 +20,20 @@ Password
 User_Type
 
  */
-use app\helpers\APP_UTILS;
-use app\model_extended\RIDER_MODEL;
-use app\models\Users;
-use app\models\UserType;
+
+use common\helper\APP_UTILS;
+
+use common\models\Riders as RIDER_MODEL;
+use common\models\UserType;
+use common\models\ApiToken;
+use common\models\login\User;
 
 /**
  * Class USER_MODEL
  * @package app\api\modules\v1\models
- * @property API_TOKEN_MODEL $apiToken
+ * @property ApiToken $apiToken
  */
-class USER_MODEL extends Users
+class USER_MODEL extends User
 {
     const SCENARIO_CREATE = 'create';
     const SCENARIO_UPDATE = 'update';
@@ -43,8 +46,8 @@ class USER_MODEL extends Users
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[APP_UTILS::SCENARIO_CREATE] = ['SURNAME', 'OTHER_NAMES', 'MOBILE', 'EMAIL', 'LOCATION_ID', 'USER_NAME', 'PASSWORD', 'USER_TYPE','RESET_TOKEN','USER_STATUS'];
-        $scenarios[APP_UTILS::SCENARIO_UPDATE] = ['SURNAME', 'OTHER_NAMES', 'MOBILE', 'EMAIL', 'LOCATION_ID', 'USER_NAME', 'PASSWORD', 'USER_TYPE','RESET_TOKEN','USER_STATUS'];
+        $scenarios[APP_UTILS::SCENARIO_CREATE] = ['SURNAME', 'OTHER_NAMES', 'MOBILE', 'EMAIL', 'LOCATION_ID', 'USER_NAME', 'PASSWORD', 'USER_TYPE', 'RESET_TOKEN', 'USER_STATUS'];
+        $scenarios[APP_UTILS::SCENARIO_UPDATE] = ['SURNAME', 'OTHER_NAMES', 'MOBILE', 'EMAIL', 'LOCATION_ID', 'USER_NAME', 'PASSWORD', 'USER_TYPE', 'RESET_TOKEN', 'USER_STATUS'];
 
         return $scenarios;
     }
@@ -123,24 +126,24 @@ class USER_MODEL extends Users
 
         $fields['MIN_PRICE'] = function ($model) {
             /* @var $model $this */
-            $min_price =  \Yii::$app->params['min_price'];
-            return \Yii::$app->formatter->asDecimal($min_price,2);
+            $min_price = \Yii::$app->params['min_price'];
+            return \Yii::$app->formatter->asDecimal($min_price, 2);
         };
 
-    $fields['MOBILE'] = function ($model) {
+        $fields['MOBILE'] = function ($model) {
             /* @var $model USER_MODEL */
             $token = $model->apiToken;
             return $this->obfuscate_email($model->MOBILE);
 
         };
-        
-     $fields['EMAIL'] = function ($model) {
+
+        $fields['EMAIL'] = function ($model) {
             /* @var $model USER_MODEL */
             $token = $model->apiToken;
             return $this->obfuscate_email($model->EMAIL);
 
         };
-        
+
         //unset($fields['MOBILE']);
         //unset($fields['EMAIL']);
         unset($fields['PASSWORD']); //remove the password field
@@ -155,18 +158,19 @@ class USER_MODEL extends Users
      */
     public function getApiToken()
     {
-        return $this->hasOne(API_TOKEN_MODEL::className(), ['USER_ID' => 'USER_ID']);
+        return $this->hasOne(ApiToken::class, ['USER_ID' => 'USER_ID']);
     }
-    
-private function obfuscate_email($email,$pos="@", $minLength = 3, $maxLength = 10, $mask = "***") {
-    $atPos = strrpos($email, $pos);
-    $name = substr($email, 0, $atPos);
-    $len = strlen($name);
-    $domain = substr($email, $atPos);
 
-    if (($len / 2) < $maxLength) $maxLength = ($len / 2);
+    private function obfuscate_email($email, $pos = "@", $minLength = 3, $maxLength = 10, $mask = "***")
+    {
+        $atPos = strrpos($email, $pos);
+        $name = substr($email, 0, $atPos);
+        $len = strlen($name);
+        $domain = substr($email, $atPos);
 
-    $shortenedEmail = (($len > $minLength) ? substr($name, 0, $maxLength) : "");
-    return  "{$shortenedEmail}{$mask}{$domain}";
-}
+        if (($len / 2) < $maxLength) $maxLength = ($len / 2);
+
+        $shortenedEmail = (($len > $minLength) ? substr($name, 0, $maxLength) : "");
+        return "{$shortenedEmail}{$mask}{$domain}";
+    }
 }
