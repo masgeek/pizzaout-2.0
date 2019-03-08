@@ -10,7 +10,6 @@ namespace api\behaviours;
 //namespace yii\filters\auth;
 use Yii;
 use yii\filters\auth\AuthMethod;
-use common\models\HaikuApps;
 use yii\web\UnauthorizedHttpException;
 
 /**

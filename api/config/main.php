@@ -13,9 +13,9 @@ return [
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'modules' => [
-        'v1' => [
-            'basePath' => '@app/modules/v1',
-            'class' => 'api\modules\v1\Module'
+        'v2' => [
+            'basePath' => '@app/modules/v2',
+            'class' => 'api\modules\v2\Module'
         ]
     ],
     'components' => [

@@ -31,8 +31,8 @@ class m190307_190929_create_auth_table extends \console\models\BaseMigration
             'user_id' => $this->bigInteger(20),
             'app_id' => $this->string(200)->notNull(),
             'expires_at' => $this->integer(11)->notNull(),
-            'created_at' => $this->timestamp(),
-            'updated_at' => $this->timestamp(),
+            'created_at' => $this->integer(11),
+            'updated_at' => $this->integer(11),
         ], $this->tableOptions);
 
         $this->addForeignKey('fk-auth-code', $this->tableName, 'user_id', '{{%users}}', 'user_id', 'CASCADE', 'CASCADE');

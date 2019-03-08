@@ -19,4 +19,9 @@ class Users extends BaseUsers
 
         return $rules;
     }
+
+    public function getUserType()
+    {
+        return UserType::findOne($this->USER_TYPE)->USER_TYPE_NAME;
+    }
 }

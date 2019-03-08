@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use Yii;
 use \common\models\base\Sizes as BaseSizes;
 
 /**
@@ -14,24 +15,20 @@ class Sizes extends BaseSizes
      */
     public function rules()
     {
-        return array_replace_recursive(parent::rules(),
-	    [
-            [['SIZE_TYPE'], 'required'],
-            [['ACTIVE'], 'boolean'],
-            [['SIZE_TYPE'], 'string', 'max' => 20],
-            [['SIZE_TYPE'], 'unique']
-        ]);
+        $rules = parent::rules();
+        $rules[] = [['SIZE_TYPE'], 'unique'];
+        return $rules;
     }
-	
+
     /**
      * @inheritdoc
      */
-    public function attributeHints()
+    public function attributeLabels()
     {
         return [
-            'SIZE_ID' => 'S I Z E I D',
-            'SIZE_TYPE' => 'S I Z E T Y P E',
-            'ACTIVE' => 'A C T I V E',
+            'SIZE_ID' => Yii::t('app', 'Size  ID'),
+            'SIZE_TYPE' => Yii::t('app', 'Size  Type'),
+            'ACTIVE' => Yii::t('app', 'Active'),
         ];
     }
 }

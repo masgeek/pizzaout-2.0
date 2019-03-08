@@ -37,7 +37,7 @@ class BaseRestController extends ActiveController
 
     public $serializer = [
         'class' => 'yii\rest\Serializer',
-        'collectionEnvelope' => 'data',
+        //'collectionEnvelope' => 'data',
         'linksEnvelope' => 'links',
         'metaEnvelope' => 'info'
     ];
@@ -54,7 +54,7 @@ class BaseRestController extends ActiveController
         $behaviors = parent::behaviors();
 
         $behaviors['corsFilter'] = [
-            'class' => \yii\filters\Cors::className(),
+            'class' => \yii\filters\Cors::class,
             'cors' => [
                 'Origin' => ['*'],
                 // 'Access-Control-Allow-Origin' => ['*', 'http://haikuwebapp.local.com:81','http://localhost:81'],
@@ -81,7 +81,7 @@ class BaseRestController extends ActiveController
 
         $behaviors['apiauth'] = [
             'class' => Apiauth::class,
-            'exclude' => [],
+            'exclude' => ['index', 'view'],
             'callback' => []
         ];
 

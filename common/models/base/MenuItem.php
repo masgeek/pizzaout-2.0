@@ -19,6 +19,7 @@ use Yii;
  *
  * @property MenuCategory $mENUCAT
  * @property MenuItemType[] $menuItemTypes
+ * @property Sizes[] $iTEMTYPESIZEs
  * @property Favs[] $favs
  */
 class MenuItem extends \yii\db\ActiveRecord
@@ -78,6 +79,14 @@ class MenuItem extends \yii\db\ActiveRecord
     public function getMenuItemTypes()
     {
         return $this->hasMany(MenuItemType::className(), ['MENU_ITEM_ID' => 'MENU_ITEM_ID']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getITEMTYPESIZEs()
+    {
+        return $this->hasMany(Sizes::className(), ['SIZE_TYPE' => 'ITEM_TYPE_SIZE'])->viaTable('menu_item_type', ['MENU_ITEM_ID' => 'MENU_ITEM_ID']);
     }
 
     /**

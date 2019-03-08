@@ -10,25 +10,20 @@ use \common\models\base\UserType as BaseUserType;
 class UserType extends BaseUserType
 {
     /**
-     * @inheritdoc
+     * @param array $excludeList
+     * @return array
      */
-    public function rules()
+    public static function GetUserTypes(array $excludeList = ['ADMIN', 'RIDER'])
     {
-        return array_replace_recursive(parent::rules(),
-	    [
-            [['USER_TYPE_NAME'], 'required'],
-            [['USER_TYPE_NAME'], 'string', 'max' => 255]
-        ]);
-    }
-	
-    /**
-     * @inheritdoc
-     */
-    public function attributeHints()
-    {
-        return [
-            'USER_TYPE_ID' => 'U S E R T Y P E I D',
-            'USER_TYPE_NAME' => 'U S E R T Y P E N A M E',
-        ];
+        $userType = self::find()
+            ->where(['NOT IN', 'USER_TYPE_NAME', $excludeList])
+            ->all();
+
+        $userTypeArr = [];
+        foreach ($userType as $key => $user_type_model) {
+            $userTypeArr[$user_type_model->USER_TYPE_ID] = $user_type_model->USER_TYPE_NAME;
+        }
+
+        return $userTypeArr;
     }
 }

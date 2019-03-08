@@ -12,6 +12,7 @@ use Yii;
  * @property bool $ACTIVE
  *
  * @property MenuItemType[] $menuItemTypes
+ * @property MenuItem[] $mENUITEMs
  */
 class Sizes extends \yii\db\ActiveRecord
 {
@@ -54,5 +55,13 @@ class Sizes extends \yii\db\ActiveRecord
     public function getMenuItemTypes()
     {
         return $this->hasMany(MenuItemType::className(), ['ITEM_TYPE_SIZE' => 'SIZE_TYPE']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMENUITEMs()
+    {
+        return $this->hasMany(MenuItem::className(), ['MENU_ITEM_ID' => 'MENU_ITEM_ID'])->viaTable('menu_item_type', ['ITEM_TYPE_SIZE' => 'SIZE_TYPE']);
     }
 }

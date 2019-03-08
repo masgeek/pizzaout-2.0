@@ -37,7 +37,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     /* @var $model \common\models\MenuCategory */
 
-                    return Html::img($model->IMAGE != null ? $model->IMAGE : $model->defaultImage(), [
+                    return Html::img($model->IMAGE != null ? $model->IMAGE : \common\helper\ImageHelper::defaultImage(), [
+                    //return Html::img($model->IMAGE != null ? $model->IMAGE : $model->defaultImage(), [
                         'alt' => 'myImage',
                         'class' => 'img-fluid img-thumbnail',
                         'width' => '70'

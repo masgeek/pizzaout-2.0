@@ -68,8 +68,6 @@
       "yii\\composer\\Installer::postCreateProject"
     ],
     "post-install-cmd": [
-      "yarn",
-      "yarn install --check-files"
     ],
     "post-update-cmd": [
       "npm link gulp",

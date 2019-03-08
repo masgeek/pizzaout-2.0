@@ -1,7 +1,6 @@
 <?php
 
-namespace api\modules\v1\controllers;
-
+namespace api\modules\v2\controllers;
 
 
 use common\models\login\LoginForm;
@@ -18,7 +17,7 @@ use frontend\models\SignupForm;
  */
 class SiteController extends BaseRestController
 {
-    public $modelClass = 'common\models\User';
+    public $modelClass = 'common\models\login\User';
 
     /**
      * @inheritdoc
@@ -29,7 +28,7 @@ class SiteController extends BaseRestController
 
         $behaviors['apiauth'] = [
             'class' => Apiauth::class,
-            'exclude' => ['authorize', 'register', 'access-token', 'index'],
+            'exclude' => ['authorize', 'register', 'access-token', 'index', 'me'],
         ];
 
         $behaviors['verbs'] = [
@@ -133,7 +132,6 @@ class SiteController extends BaseRestController
         if ($model->validate() && $model->login()) {
 
             $auth_code = Yii::$app->api->createAuthorizationCode(Yii::$app->user->identity['id']);
-
             $data = [];
             $data['authorization_code'] = $auth_code->code;
             $data['expires_at'] = $auth_code->expires_at;

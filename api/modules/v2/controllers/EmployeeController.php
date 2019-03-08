@@ -1,7 +1,7 @@
 <?php
 
 
-namespace api\modules\v1\controllers;
+namespace api\modules\v2\controllers;
 
 
 use api\models\Employee;

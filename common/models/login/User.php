@@ -10,12 +10,12 @@ use yii\base\Security;
 use yii\behaviors\TimestampBehavior;
 use yii\web\IdentityInterface;
 use common\models\AccessTokens;
-use common\models\base\Users as BaseUser;
+use common\models\Users as BaseUser;
 
 /**
  * User model
  *
- * @property integer $id
+ * @property integer $USER_ID
  * @property string $username
  * @property string $password_hash
  * @property string $password_reset_token
@@ -30,10 +30,33 @@ use common\models\base\Users as BaseUser;
  */
 class User extends BaseUser implements IdentityInterface
 {
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 10;
+    const ROLE_USER = 10;
+
     public $ACCOUNT_AUTH_KEY;
     public $PASSWORD_RESET_TOKEN;
     public $CONFIRM_PASSWORD;
     public $FULL_NAMES;
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            TimestampBehavior::class,
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        $rules = parent::rules();
+        return $rules;
+    }
 
     /**
      * Finds an identity by the given ID.
@@ -47,9 +70,20 @@ class User extends BaseUser implements IdentityInterface
         return static::findOne($id);
     }
 
+    /**
+     * @inheritdoc
+     */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return $token;
+        $access_token = AccessTokens::findOne(['token' => $token]);
+        if ($access_token) {
+            if ($access_token->expires_at < time()) {
+                return Yii::$app->api->sendFailedResponse('Access token expired');
+            }
+
+            return static::findOne(['USER_ID' => $access_token->user_id]);
+        }
+        return false;
     }
 
     /**
@@ -206,10 +240,5 @@ class User extends BaseUser implements IdentityInterface
     public function getMobile()
     {
         return $this->MOBILE;
-    }
-
-    public function getUserType()
-    {
-        return UserType::findOne($this->USER_TYPE)->USER_TYPE_NAME;
     }
 }

@@ -4,9 +4,7 @@ namespace common\components;
 
 use Yii;
 use yii\base\Component;
-use yii\base\InvalidConfigException;
 use yii\helpers\Json;
-use common\models\Users;
 
 use common\models\AuthorizationCodes;
 use common\models\AccessTokens;
@@ -130,12 +128,7 @@ class Api extends Component
 
         $model->user_id = $user_id;
 
-        if (isset($_SERVER['HTTP_X_HAIKUJAM_APPLICATION_ID']))
-            $app_id = $_SERVER['HTTP_X_HAIKUJAM_APPLICATION_ID'];
-        else
-            $app_id = null;
-
-        $model->app_id = $app_id;
+        $model->app_id = 'PIZZAOUT';
         $model->created_at = time();
         $model->updated_at = time();
 
@@ -163,6 +156,8 @@ class Api extends Component
         $model->expires_at = time() + (60 * 60 * 24 * 60); // 60 days
 
         $model->user_id = $auth_code->user_id;
+
+        $model->app_id = 'PIZZAOUT';
 
         $model->created_at = time();
 

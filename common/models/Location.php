@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use Yii;
 use \common\models\base\Location as BaseLocation;
 use yii\helpers\ArrayHelper;
 
@@ -10,6 +11,21 @@ use yii\helpers\ArrayHelper;
  */
 class Location extends BaseLocation
 {
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'LOCATION_ID' => Yii::t('app', 'Location  ID'),
+            'CITY_ID' => Yii::t('app', 'City  ID'),
+            'LOCATION_NAME' => Yii::t('app', 'Location  Name'),
+            'ADDRESS' => Yii::t('app', 'Address'),
+            'ACTIVE' => Yii::t('app', 'Active'),
+        ];
+    }
+
+
     public static function GetActiveLocation()
     {
         $location = self::find()

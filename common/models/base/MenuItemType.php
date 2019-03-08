@@ -40,6 +40,7 @@ class MenuItemType extends \yii\db\ActiveRecord
             [['PRICE'], 'number'],
             [['AVAILABLE'], 'boolean'],
             [['ITEM_TYPE_SIZE'], 'string', 'max' => 15],
+            [['ITEM_TYPE_SIZE', 'MENU_ITEM_ID'], 'unique', 'targetAttribute' => ['ITEM_TYPE_SIZE', 'MENU_ITEM_ID']],
             [['MENU_ITEM_ID'], 'exist', 'skipOnError' => true, 'targetClass' => MenuItem::className(), 'targetAttribute' => ['MENU_ITEM_ID' => 'MENU_ITEM_ID']],
             [['ITEM_TYPE_SIZE'], 'exist', 'skipOnError' => true, 'targetClass' => Sizes::className(), 'targetAttribute' => ['ITEM_TYPE_SIZE' => 'SIZE_TYPE']],
         ];
