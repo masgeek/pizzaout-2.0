@@ -31,9 +31,8 @@
     "deploy-dev": "php phploy.phar -d",
     "deploy-prod": "php phploy.phar",
     "clean": "yarn autoclean --force",
-    "frontend-dev": "php -S 127.0.0.1:8000 -t frontend/",
-    "backend-dev": "php -S 127.0.0.1:8001 -t backend/",
-    "api-dev": "php -S 127.0.0.1:8002",
-    "api-dev-remote": "php -S 192.168.100.4:8003"
+    "frontend-dev": "php -S 0.0.0.0:8000 -t frontend/",
+    "backend-dev": "php -S 0.0.0.0:8001 -t backend/",
+    "api-dev": "php -S 0.0.0.0:8002"
   }
 }

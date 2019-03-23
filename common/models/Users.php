@@ -10,6 +10,7 @@ use \common\models\base\Users as BaseUsers;
 class Users extends BaseUsers
 {
     public $reCaptcha;
+    public $status;
 
     public function rules()
     {
