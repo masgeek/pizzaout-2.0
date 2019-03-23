@@ -38,7 +38,6 @@ class User extends BaseUser implements IdentityInterface
     public $PASSWORD_RESET_TOKEN;
     public $CONFIRM_PASSWORD;
     public $FULL_NAMES;
-
     /**
      * @inheritdoc
      */

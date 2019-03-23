@@ -52,6 +52,7 @@ $url_rules = [
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => [
+            'v1/my-cart' => 'v1/cart',
             'v2/my-cart' => 'v2/cart',
         ],
         'tokens' => [
@@ -72,6 +73,7 @@ $url_rules = [
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => [
+            'v1/order',
             'v2/order',
         ],
         'tokens' => [
@@ -89,6 +91,7 @@ $url_rules = [
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => [
+            'v1/timeline',
             'v2/timeline',
         ],
         'tokens' => [
@@ -105,6 +108,7 @@ $url_rules = [
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => [
+            'v1/address' => 'v1/address',
             'v2/address' => 'v2/address',
         ],
         'tokens' => [
@@ -120,6 +124,7 @@ $url_rules = [
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => [
+            'v1/location',
             'v2/location',
         ],
     ],
@@ -127,6 +132,7 @@ $url_rules = [
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => [
+            'v1/rider',
             'v2/rider',
         ],
         'tokens' => [
@@ -141,6 +147,7 @@ $url_rules = [
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => [
+            'v1/cust-addr' => 'v1/customeraddress',
             'v2/cust-addr' => 'v2/customeraddress',
         ],
         'tokens' => [
@@ -154,11 +161,16 @@ $url_rules = [
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => [
+            'v1/payment',
             'v2/payment',
+            'v1/user',
             'v2/user',
+            'v1/menucategory',
             'v2/menucategory',
+            'v1/menuitem',
             'v2/menuitem',
         ],
+        //'GET,HEAD <id:\d+>/booth' => 'booth/all-booths',
         'tokens' => [
             '{id}' => '<id:\\w+>',
             '{user_id}' => '<user_id:\\w+>',
@@ -183,13 +195,15 @@ $url_rules = [
             'GET account-type' => 'account-type',
             'GET {menu_cat_id}/cat-item' => 'cat-item',
             'GET single-cat' => 'single-cat',
+
             'POST generate' => 'generate',
         ],
     ],
     [
         'class' => 'yii\rest\UrlRule',
         'controller' => [
-            'v2/delivery' => 'v2/delivery',
+            'v1/delivery' => 'v1/delivery',
+            'v2/delivery' => 'v1/delivery',
         ],
         'tokens' => [
             '{id}' => '<id:\\w+>',

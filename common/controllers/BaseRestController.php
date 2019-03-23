@@ -19,6 +19,7 @@ use yii\filters\auth\QueryParamAuth;
 use yii\helpers\Json;
 use yii\rest\ActiveController;
 use yii\web\NotAcceptableHttpException;
+use yii\web\Response;
 
 /**
  * Base Controller API
@@ -37,7 +38,7 @@ class BaseRestController extends ActiveController
 
     public $serializer = [
         'class' => 'yii\rest\Serializer',
-        //'collectionEnvelope' => 'data',
+        'collectionEnvelope' => 'data',
         'linksEnvelope' => 'links',
         'metaEnvelope' => 'info'
     ];
@@ -84,6 +85,8 @@ class BaseRestController extends ActiveController
             'exclude' => ['index', 'view'],
             'callback' => []
         ];
+
+        //$behaviors['contentNegotiator']['formats']['application/json'] = Response::FORMAT_JSON;
 
         $behaviors['requestcheck'] = [
             'class' => Requestcheck::class,

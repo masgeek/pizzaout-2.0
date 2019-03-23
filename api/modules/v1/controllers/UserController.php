@@ -6,24 +6,20 @@
  * Time: 8:47 PM
  */
 
-namespace api\modules\v2\controllers;
+namespace api\modules\v1\controllers;
 
 use api\behaviours\Apiauth;
-use api\models\USER_MODEL;
 use common\controllers\BaseRestController;
+use common\models\ApiToken;
+use api\models\USER_MODEL;
 use common\helper\APP_UTILS;
-use common\models\ApiToken as API_TOKEN_MODEL;
 use Yii;
-use yii\helpers\Url;
 use yii\rest\ActiveController;
 use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
 
 class UserController extends BaseRestController
 {
-    /**
-     * @var object
-     */
     public $modelClass = 'api\models\USER_MODEL';
 
     public function behaviors()
@@ -32,7 +28,7 @@ class UserController extends BaseRestController
 
         $behaviors['apiauth'] = [
             'class' => Apiauth::class,
-            'exclude' => ['login', 'index'],
+            'exclude' => ['login', 'index', 'register', 'recover'],
         ];
 
         return $behaviors;
@@ -44,10 +40,12 @@ class UserController extends BaseRestController
     public function actions()
     {
         $actions = parent::actions();
+
+        //unset($actions['create']);
+        //unset($actions['index']);
         unset($actions['delete']);
         return $actions;
     }
-
 
     /**
      * @return array|null|static
@@ -71,12 +69,12 @@ class UserController extends BaseRestController
             $user = USER_MODEL::findOne(['EMAIL' => $username, 'PASSWORD' => $password]);
         }
 
-        //return [];
         if ($user != null) {
             $user->status = true;
             $message = $user;
+
             //create the api token too
-            API_TOKEN_MODEL::CreateApiToken($user->USER_ID);
+            ApiToken::CreateApiToken($user->USER_ID);
         } else {
             $message = [
                 'status' => false,
@@ -136,6 +134,7 @@ class UserController extends BaseRestController
         $user = new USER_MODEL();
         $user->setScenario(USER_MODEL::SCENARIO_CREATE);
         $user->load($request);
+
         $user->RESET_TOKEN = '1234';
         $user->USER_STATUS = (boolean)$userStatus;
         if ($user->validate()) {
@@ -155,6 +154,8 @@ class UserController extends BaseRestController
                     'message' => $error[0]
                 ];
             }
+            //return Yii::$app->api->sendFailedResponse($message, 420);
+            return Yii::$app->api->sendSuccessResponse($message);
         }
         return $message;
     }
@@ -165,7 +166,7 @@ class UserController extends BaseRestController
      * @throws BadRequestHttpException
      * @throws NotFoundHttpException
      */
-    public function actionUpdates($id)
+    public function actionUpdate($id)
     {
         /* @var $request USER_MODEL */
         $message = [];
@@ -181,7 +182,7 @@ class UserController extends BaseRestController
 
 
         $user->setScenario(USER_MODEL::SCENARIO_UPDATE);
-        $request = (object)YII::$APP->REQUEST->BODYPARAMS;
+        $request = (object)yii::$app->request->bodyparams;
         $user->SURNAME = ISSET($request->SURNAME) ? $request->SURNAME : $user->SURNAME;
         $user->EMAIL = ISSET($request->EMAIL) ? $request->EMAIL : $user->EMAIL;
         $user->MOBILE = ISSET($request->MOBILE) ? $request->MOBILE : $user->MOBILE;

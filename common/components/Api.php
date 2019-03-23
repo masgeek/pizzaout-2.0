@@ -15,40 +15,10 @@ use common\models\AccessTokens;
 class Api extends Component
 {
 
-    public function sendFailedResponse($message)
+    public function sendFailedResponse($message, $errorCode = 400)
     {
-        $this->setHeader(400);
-        //return json_encode(array('status' => 0, 'error_code' => 400, 'errors' => $message), JSON_PRETTY_PRINT);
-        return array('status' => 0, 'error_code' => 400, 'errors' => $message);
-        //Yii::$app->end();
-    }
-
-
-    public function sendSuccessResponseOld($data = false, $additional_info = false)
-    {
-
-        $this->setHeader(200);
-
-        $response = [];
-        $response['status'] = 1;
-
-        if (is_array($data)) {
-            $response['data'] = $data;
-        }
-
-        if ($additional_info) {
-            $response = array_merge($response, $additional_info);
-        }
-
-        $response = Json::encode($response, JSON_PRETTY_PRINT);
-
-
-        if (isset($_GET['callback'])) {
-            /* this is required for angularjs1.0 client factory API calls to work */
-            $response = $_GET['callback'] . "(" . $response . ")";
-        }
-
-        return $response;
+        $this->setHeader($errorCode);
+        return ['status' => 0, 'errorCode' => $errorCode, 'errors' => $message];
     }
 
     /**
@@ -96,7 +66,7 @@ class Api extends Component
 
         header($status_header);
         header('Content-type: ' . $content_type);
-        header('X-Powered-By: ' . "Your Company <www.mywebsite.com>");
+        header('X-Powered-By: ' . "Tsobu Enterprise <support@tsobu.co.ke>");
         header('Access-Control-Allow-Origin:*');
     }
 
@@ -114,6 +84,7 @@ class Api extends Component
             404 => 'Not Found',
             500 => 'Internal Server Error',
             501 => 'Not Implemented',
+            420 => 'Validation Errors',
         );
         return (isset($codes[$status])) ? $codes[$status] : '';
     }

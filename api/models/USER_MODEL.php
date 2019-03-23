@@ -24,16 +24,16 @@ User_Type
 use common\helper\APP_UTILS;
 
 use common\models\Riders as RIDER_MODEL;
+use common\models\Users;
 use common\models\UserType;
 use common\models\ApiToken;
-use common\models\login\User;
 
 /**
  * Class USER_MODEL
  * @package app\api\modules\v1\models
  * @property ApiToken $apiToken
  */
-class USER_MODEL extends User
+class USER_MODEL extends Users
 {
     const SCENARIO_CREATE = 'create';
     const SCENARIO_UPDATE = 'update';
@@ -97,23 +97,27 @@ class USER_MODEL extends User
         $fields = parent::fields();
 
         $fields['USER_TYPE'] = function ($model) {
-            /* @var $model USER_MODEL */
-            return UserType::findOne($model->USER_TYPE)->USER_TYPE_NAME;
+            /* @var $model Users */
+            $user = UserType::findOne($model->USER_TYPE);
+            if ($user != null) {
+                return $user->USER_TYPE_NAME;
+            }
+            return 0;
         };
 
         $fields['RIDER_ID'] = function ($model) {
-            /* @var $model USER_MODEL */
+            /* @var $model Users */
             $rider = RIDER_MODEL::findOne(['USER_ID' => $model->USER_ID]);
             return $rider != null ? $rider->RIDER_ID : 0;
         };
 
         $fields['USER_STATUS'] = function ($model) {
-            /* @var $model USER_MODEL */
+            /* @var $model Users */
             return (boolean)$model->USER_STATUS;
         };
 
         $fields['API_TOKEN'] = function ($model) {
-            /* @var $model USER_MODEL */
+            /* @var $model Users */
             $token = $model->apiToken;
             return $token != null ? $token->API_TOKEN : 0;
 
@@ -131,16 +135,22 @@ class USER_MODEL extends User
         };
 
         $fields['MOBILE'] = function ($model) {
-            /* @var $model USER_MODEL */
+            /* @var $model Users */
             $token = $model->apiToken;
             return $this->obfuscate_email($model->MOBILE);
 
         };
 
         $fields['EMAIL'] = function ($model) {
-            /* @var $model USER_MODEL */
+            /* @var $model Users */
             $token = $model->apiToken;
             return $this->obfuscate_email($model->EMAIL);
+
+        };
+
+        $fields['status'] = function ($model) {
+            /* @var $model Users */
+            return $model->status;
 
         };
 
